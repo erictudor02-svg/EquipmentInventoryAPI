@@ -1,0 +1,138 @@
+{
+  "info": {
+    "_postman_id": "fb4a3753-8a2b-4c10-af7f-364f54b8346a",
+    "name": "Milestone 3 - Equipment Inventory API",
+    "description": "Equipment Inventory Manager REST API\n\nThis API manages equipment records using Express, TypeScript, and MySQL.\n\nBase URL: [http://localhost:5000](http://localhost:5000)  \nResource path: /api/equipment-items  \nAuthentication: None required.\n\nOperations:  \nGET /api/equipment-items — List all equipment.  \nGET /api/equipment-items/:id — Retrieve one equipment record.  \nPOST /api/equipment-items — Create an equipment record.  \nPUT /api/equipment-items/:id — Update all editable fields.  \nDELETE /api/equipment-items/:id — Delete an equipment record.\n\nPOST and PUT require Content-Type: application/json.\n\nEditable fields: name, description, quantity, isAvailable.  \nThe database generates equipmentId.\n\nErrors use a JSON error object containing code and message.  \nField validation errors also include fields.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "54418258",
+    "_collection_link": "https://go.postman.co/collection/54418258-fb4a3753-8a2b-4c10-af7f-364f54b8346a?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Get All Equipment",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/equipment-items",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "equipment-items"
+          ]
+        },
+        "description": "Retrieves all equipment records, ordered by equipmentId.\n\nMethod: GET  \nURL: [http://localhost:5000/api/equipment-items](http://localhost:5000/api/equipment-items)\n\nRequest body: None.  \nAuthentication: None.\n\n200 OK: Returns a JSON array of equipment records.  \nAn empty inventory returns \\[\\].\n\nEach record contains:  \nequipmentId — Database-generated integer.  \nname — Equipment name.  \ndescription — Description string or null.  \nquantity — Nonnegative integer.  \nisAvailable — Boolean indicating usability.\n\n500 Internal Server Error: An unexpected database or server failure."
+      },
+      "response": []
+    },
+    {
+      "name": "Create Equipment",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Cordless Drill\",\r\n  \"description\": \"18-volt cordless drill with battery and charger.\",\r\n  \"quantity\": 5,\r\n  \"isAvailable\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/equipment-items",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "equipment-items"
+          ]
+        },
+        "description": "Creates an equipment record with a database-generated ID.\n\nMethod: POST  \nURL: [http://localhost:5000/api/equipment-items](http://localhost:5000/api/equipment-items)  \nContent-Type: application/json  \nAuthentication: None.\n\nRequired JSON fields:  \nname — String; trimmed length of 1–100 characters.  \ndescription — String of up to 2000 characters, or null.  \nquantity — Integer between 0 and 2147483647.  \nisAvailable — Boolean: true or false.\n\nAll four fields must be supplied. Unknown fields are rejected.  \nDo not include equipmentId.  \nBlank descriptions are normalized to null.  \nAvailability indicates usability independently of quantity.\n\nExample request:  \n{  \n\"name\": \"Cordless Drill\",  \n\"description\": \"18-volt cordless drill with battery and charger.\",  \n\"quantity\": 5,  \n\"isAvailable\": true  \n}\n\n201 Created: Returns the saved equipment object, including equipmentId.  \nThe Location header identifies the new resource path.\n\n400 Bad Request: Invalid JSON, unknown fields, or invalid field values.  \n415 Unsupported Media Type: Content-Type is not application/json.  \n500 Internal Server Error: An unexpected database or server failure."
+      },
+      "response": []
+    },
+    {
+      "name": "Get Equipment by ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/equipment-items/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "equipment-items",
+            "1"
+          ]
+        },
+        "description": "Retrieves one equipment record by its database-generated ID.\n\nMethod: GET  \nURL: [http://localhost:5000/api/equipment-items/:id](http://localhost:5000/api/equipment-items/:id)\n\nReplace :id with an existing equipment ID, such as 2.  \nThe ID must be an integer between 1 and 2147483647.\n\nRequest body: None.  \nAuthentication: None.\n\n200 OK: Returns the equipment object containing equipmentId,  \nname, description, quantity, and isAvailable.\n\n400 Bad Request: The ID is invalid.  \n404 Not Found: No equipment exists with that ID.  \n500 Internal Server Error: An unexpected database or server failure.\n\nExample error:  \n{  \n\"error\": {  \n\"code\": \"NOT_FOUND\",  \n\"message\": \"Equipment not found.\"  \n}  \n}"
+      },
+      "response": []
+    },
+    {
+      "name": "Update Equipment",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"name\": \"Cordless Drill\",\r\n  \"description\": \"18-volt cordless drill with battery and charger.\",\r\n  \"quantity\": 5,\r\n  \"isAvailable\": true\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:5000/api/equipment-items/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "equipment-items",
+            "2"
+          ]
+        },
+        "description": "Updates all editable fields of an existing equipment record.\n\nMethod: PUT  \nURL: [http://localhost:5000/api/equipment-items/:id](http://localhost:5000/api/equipment-items/:id)  \nContent-Type: application/json  \nAuthentication: None.\n\nReplace :id with an existing equipment ID, such as 2.  \nThe ID must be an integer between 1 and 2147483647.\n\nAll four editable fields are required:  \nname — String; trimmed length of 1–100 characters.  \ndescription — String of up to 2000 characters, or null.  \nquantity — Integer between 0 and 2147483647.  \nisAvailable — Boolean: true or false.\n\nUnknown fields are rejected. Do not include equipmentId.  \nBlank descriptions are normalized to null.  \nAvailability indicates usability independently of quantity.\n\nExample request:  \n{  \n\"name\": \"Cordless Drill\",  \n\"description\": \"18-volt cordless drill currently under maintenance.\",  \n\"quantity\": 3,  \n\"isAvailable\": false  \n}\n\n200 OK: Returns the updated equipment object.  \nSubmitting unchanged values also returns 200.  \nThe ID remains unchanged. A missing record is not created.\n\n400 Bad Request: Invalid ID, malformed JSON, or invalid input.  \n404 Not Found: No equipment exists with that ID.  \n415 Unsupported Media Type: Content-Type is not application/json.  \n500 Internal Server Error: An unexpected database or server failure."
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Equipment",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:5000/api/equipment-items/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "5000",
+          "path": [
+            "api",
+            "equipment-items",
+            "1"
+          ]
+        },
+        "description": "Permanently deletes one equipment record.\n\nMethod: DELETE  \nURL: [http://localhost:5000/api/equipment-items/:id](http://localhost:5000/api/equipment-items/:id)  \nAuthentication: None.\n\nReplace :id with an existing equipment ID, such as 2.  \nThe ID must be an integer between 1 and 2147483647.\n\nRequest body: None.\n\n204 No Content: The record was deleted. No response body is returned.\n\n400 Bad Request: The ID is invalid.  \n404 Not Found: No equipment exists with that ID.  \n500 Internal Server Error: An unexpected database or server failure.\n\nRepeating DELETE for a deleted record returns 404.  \nUse GET afterward to verify that the record is absent."
+      },
+      "response": []
+    }
+  ]
+}
